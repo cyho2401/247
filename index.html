@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>24/7 Fitness HK — Branch Directory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111;
+    --border: #222;
+    --border-light: #2a2a2a;
+    --text: #e8e8e8;
+    --muted: #666;
+    --accent: #00c8c8;
+
+    --goat: #ffd700;
+    --sp:   #c084fc;
+    --s:    #818cf8;
+    --sm:   #60a5fa;
+    --ap:   #34d399;
+    --a:    #4ade80;
+    --am:   #86efac;
+    --bp:   #fbbf24;
+    --b:    #f59e0b;
+    --bm:   #f97316;
+    --cp:   #fb923c;
+    --c:    #ef4444;
+    --cm:   #dc2626;
+    --d:    #9f1239;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans TC', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+  }
+  .logo span { color: var(--text); }
+  .header-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    padding: 14px 24px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 61px;
+    background: rgba(10,10,10,0.97);
+    backdrop-filter: blur(8px);
+    z-index: 99;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+  }
+  .search-wrap input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 8px 12px 8px 34px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap input::placeholder { color: var(--muted); }
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 13px;
+    pointer-events: none;
+  }
+
+  select {
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+  select:focus { border-color: var(--accent); }
+  select option { background: #1a1a1a; }
+
+  .btn-clear {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn-clear:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── RANK LEGEND ── */
+  .legend {
+    padding: 10px 24px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .legend-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+  .rank-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    border: 1px solid transparent;
+    opacity: 0.75;
+  }
+  .rank-pill:hover { opacity: 1; transform: scale(1.05); }
+  .rank-pill.active { opacity: 1; border-color: rgba(255,255,255,0.3); }
+
+  /* ── STATS BAR ── */
+  .stats {
+    padding: 8px 24px;
+    display: flex;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .stat-item b { color: var(--text); font-weight: 500; }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    padding: 0 24px 40px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 13px;
+  }
+
+  thead th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s;
+    position: relative;
+  }
+  thead th:hover { color: var(--text); }
+  thead th .sort-arrow { margin-left: 4px; opacity: 0.4; }
+  thead th.sorted .sort-arrow { opacity: 1; color: var(--accent); }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+    cursor: default;
+  }
+  tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+  td {
+    padding: 10px 12px;
+    vertical-align: middle;
+  }
+
+  .td-code {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .td-zone {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .td-district {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .td-address {
+    font-size: 11px;
+    color: #aaa;
+    max-width: 320px;
+    line-height: 1.4;
+  }
+
+  .td-facilities {
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    max-width: 200px;
+  }
+  .td-facilities.filled {
+    font-style: normal;
+    color: var(--text);
+  }
+
+  /* ── RANK BADGE ── */
+  .rank-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 4px;
+    white-space: nowrap;
+    min-width: 44px;
+    text-align: center;
+  }
+
+  /* ── ZONE CHIP ── */
+  .zone-chip {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.07);
+    color: var(--muted);
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 200;
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #141414;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 520px;
+    padding: 28px;
+    position: relative;
+    animation: modalIn 0.2s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.15s;
+  }
+  .modal-close:hover { color: var(--text); }
+  .modal-code {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .modal-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .modal-section {
+    margin-bottom: 16px;
+  }
+  .modal-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .modal-section-value {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .modal-section-value.empty-val {
+    color: var(--muted);
+    font-style: italic;
+    font-size: 12px;
+  }
+  .modal-map-btn {
+    display: inline-block;
+    margin-top: 16px;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .modal-map-btn:hover { opacity: 0.85; }
+  .modal-map-btn.disabled {
+    background: var(--border-light);
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .modal-rank-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #444; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">24/7 <span>FITNESS HK</span></div>
+  <div style="font-family:'DM Mono',monospace;font-size:11px;color:#555;margin-left:8px;">Branch Directory</div>
+  <div class="header-count" id="headerCount"></div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="searchInput" placeholder="Search branch code, district, address…" />
+  </div>
+  <select id="zoneFilter">
+    <option value="">All Zones</option>
+    <option value="港島區">港島區</option>
+    <option value="九龍區">九龍區</option>
+    <option value="新界區">新界區</option>
+  </select>
+  <select id="districtFilter">
+    <option value="">All Districts</option>
+  </select>
+  <button class="btn-clear" onclick="clearFilters()">✕ Clear</button>
+</div>
+
+<div class="legend">
+  <span class="legend-label">Rank:</span>
+  <span class="rank-pill" data-rank="GOAT" style="background:#ffd70022;color:#ffd700" onclick="filterByRank('GOAT')">GOAT</span>
+  <span class="rank-pill" data-rank="S+" style="background:#c084fc22;color:#c084fc" onclick="filterByRank('S+')">S+</span>
+  <span class="rank-pill" data-rank="S" style="background:#818cf822;color:#818cf8" onclick="filterByRank('S')">S</span>
+  <span class="rank-pill" data-rank="S-" style="background:#60a5fa22;color:#60a5fa" onclick="filterByRank('S-')">S-</span>
+  <span class="rank-pill" data-rank="A+" style="background:#34d39922;color:#34d399" onclick="filterByRank('A+')">A+</span>
+  <span class="rank-pill" data-rank="A" style="background:#4ade8022;color:#4ade80" onclick="filterByRank('A')">A</span>
+  <span class="rank-pill" data-rank="A-" style="background:#86efac22;color:#86efac" onclick="filterByRank('A-')">A-</span>
+  <span class="rank-pill" data-rank="B+" style="background:#fbbf2422;color:#fbbf24" onclick="filterByRank('B+')">B+</span>
+  <span class="rank-pill" data-rank="B" style="background:#f59e0b22;color:#f59e0b" onclick="filterByRank('B')">B</span>
+  <span class="rank-pill" data-rank="B-" style="background:#f9731622;color:#f97316" onclick="filterByRank('B-')">B-</span>
+  <span class="rank-pill" data-rank="C+" style="background:#fb923c22;color:#fb923c" onclick="filterByRank('C+')">C+</span>
+  <span class="rank-pill" data-rank="C" style="background:#ef444422;color:#ef4444" onclick="filterByRank('C')">C</span>
+  <span class="rank-pill" data-rank="C-" style="background:#dc262622;color:#dc2626" onclick="filterByRank('C-')">C-</span>
+  <span class="rank-pill" data-rank="D" style="background:#9f123922;color:#f87171" onclick="filterByRank('D')">D</span>
+</div>
+
+<div class="stats" id="statsBar"></div>
+
+<div class="table-wrap">
+  <table id="gymTable">
+    <thead>
+      <tr>
+        <th onclick="sortBy('Branch Code')" id="th-code">#<span class="sort-arrow">↕</span></th>
+        <th onclick="sortBy('Branch Code')" id="th-branchcode">Branch Code<span class="sort-arrow">↕</span></th>
+        <th onclick="sortBy('Ranking')" id="th-ranking">Ranking<span class="sort-arrow">↕</span></th>
+        <th onclick="sortBy('Zone')" id="th-zone">Zone<span class="sort-arrow">↕</span></th>
+        <th onclick="sortBy('District')" id="th-district">District<span class="sort-arrow">↕</span></th>
+        <th>Address</th>
+        <th>Facilities</th>
+      </tr>
+    </thead>
+    <tbody id="gymBody"></tbody>
+  </table>
+  <div class="empty" id="emptyState" style="display:none">No branches match your filters.</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-code" id="mCode"></div>
+    <div class="modal-meta" id="mMeta"></div>
+    <div class="modal-rank-row" id="mRankRow"></div>
+    <div class="modal-section">
+      <div class="modal-section-label">Address</div>
+      <div class="modal-section-value" id="mAddress"></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Facilities</div>
+      <div class="modal-section-value" id="mFacilities"></div>
+    </div>
+    <a href="#" id="mMapBtn" class="modal-map-btn" target="_blank">Open in Google Maps ↗</a>
+  </div>
+</div>
+
+<script>
+const RAW_DATA = [{"Branch Code":"ParkIsland","Zone":"新界區","District":"葵青區","Ranking":"A","address":"Park Island, Ma Wan","facilities":"","lat":"","lng":""},{"Branch Code":"SPK2","Zone":"九龍區","District":"黃大仙區","Ranking":"A","address":"San Po Kong 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"MF","Zone":"九龍區","District":"深水埗區","Ranking":"A","address":"Mong Kok / Sham Shui Po border area","facilities":"","lat":"","lng":""},{"Branch Code":"SSP1","Zone":"九龍區","District":"深水埗區","Ranking":"A","address":"Sham Shui Po 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"ABD3","Zone":"港島區","District":"南區","Ranking":"A","address":"3/F, 20-28 Chengtu Road, THF Mall, Aberdeen","facilities":"","lat":"","lng":""},{"Branch Code":"Mira","Zone":"九龍區","District":"油尖旺區","Ranking":"A","address":"The Mira Hotel area, Tsim Sha Tsui","facilities":"","lat":"","lng":""},{"Branch Code":"TaiWai2","Zone":"新界區","District":"沙田區","Ranking":"A","address":"Tai Wai 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"FL3","Zone":"新界區","District":"北區","Ranking":"A","address":"Fanling 3rd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TKW2","Zone":"九龍區","District":"九龍城區","Ranking":"A","address":"To Kwa Wan 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"KT1","Zone":"九龍區","District":"觀塘區","Ranking":"A-","address":"Kwun Tong 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TW4","Zone":"新界區","District":"荃灣區","Ranking":"A-","address":"Tsuen Wan 4th Branch","facilities":"","lat":"","lng":""},{"Branch Code":"WCH","Zone":"港島區","District":"南區","Ranking":"A-","address":"Wong Chuk Hang","facilities":"","lat":"","lng":""},{"Branch Code":"JD1","Zone":"九龍區","District":"油尖旺區","Ranking":"A-","address":"Jordan 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"JD2","Zone":"九龍區","District":"油尖旺區","Ranking":"A-","address":"Jordan 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"ST1","Zone":"新界區","District":"沙田區","Ranking":"A-","address":"Sha Tin 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TKO3","Zone":"新界區","District":"西貢區","Ranking":"A-","address":"Tseung Kwan O 3rd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TM1","Zone":"新界區","District":"屯門區","Ranking":"A-","address":"Tuen Mun 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"YL1E","Zone":"新界區","District":"元朗區","Ranking":"A-","address":"Yuen Long 1E Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TP2","Zone":"新界區","District":"大埔區","Ranking":"A-","address":"Tai Po 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"KT3","Zone":"九龍區","District":"觀塘區","Ranking":"A+","address":"Kwun Tong 3rd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"DB","Zone":"新界區","District":"離島區","Ranking":"A+","address":"Discovery Bay, Lantau Island","facilities":"","lat":"","lng":""},{"Branch Code":"PFL","Zone":"港島區","District":"南區","Ranking":"A+","address":"Pok Fu Lam","facilities":"","lat":"","lng":""},{"Branch Code":"FT","Zone":"新界區","District":"沙田區","Ranking":"A+","address":"Fo Tan, Sha Tin","facilities":"","lat":"","lng":""},{"Branch Code":"FL2","Zone":"新界區","District":"北區","Ranking":"A+","address":"Fanling 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TM4","Zone":"新界區","District":"屯門區","Ranking":"A+","address":"Tuen Mun 4th Branch","facilities":"","lat":"","lng":""},{"Branch Code":"CTL2","Zone":"港島區","District":"中西區","Ranking":"A+","address":"3/F, Silver Fortune Plaza, 1 Wellington Street, Central","facilities":"","lat":"","lng":""},{"Branch Code":"SL","Zone":"九龍區","District":"觀塘區","Ranking":"B","address":"Sau Mau Ping / Lam Tin, Kwun Tong","facilities":"","lat":"","lng":""},{"Branch Code":"SL","Zone":"九龍區","District":"觀塘區","Ranking":"B","address":"Sau Mau Ping / Lam Tin, Kwun Tong","facilities":"","lat":"","lng":""},{"Branch Code":"LT1","Zone":"九龍區","District":"觀塘區","Ranking":"B","address":"Lam Tin 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"PoTat","Zone":"九龍區","District":"觀塘區","Ranking":"B","address":"Po Tat Estate, Kwun Tong","facilities":"","lat":"","lng":""},{"Branch Code":"KT2","Zone":"九龍區","District":"觀塘區","Ranking":"B","address":"Kwun Tong 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"CWB2","Zone":"港島區","District":"灣仔區","Ranking":"B","address":"Shop 102, 1/F, Lok Sing Centre, 2-8 Sugar Street, Causeway Bay","facilities":"","lat":"","lng":""},{"Branch Code":"CWB2","Zone":"港島區","District":"灣仔區","Ranking":"B","address":"Shop 102, 1/F, Lok Sing Centre, 2-8 Sugar Street, Causeway Bay","facilities":"","lat":"","lng":""},{"Branch Code":"KS","Zone":"新界區","District":"葵青區","Ranking":"B","address":"Shop 132, 1/F, Kwai Shing East Shopping Centre, Kwai Shing East Estate, Kwai Chung","facilities":"","lat":"","lng":""},{"Branch Code":"TY2","Zone":"新界區","District":"葵青區","Ranking":"B","address":"Tsing Yi 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TY3","Zone":"新界區","District":"葵青區","Ranking":"B","address":"Tsing Yi 3rd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"KC2","Zone":"新界區","District":"葵青區","Ranking":"B","address":"1/F, Sin Hua Building, 122 Wo Yi Hop Road, Kwai Chung","facilities":"","lat":"","lng":""},{"Branch Code":"TY1","Zone":"新界區","District":"葵青區","Ranking":"B","address":"Tsing Yi 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"LT2","Zone":"九龍區","District":"黃大仙區","Ranking":"B","address":"Lam Tin 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TWS","Zone":"九龍區","District":"黃大仙區","Ranking":"B","address":"Tsz Wan Shan","facilities":"","lat":"","lng":""},{"Branch Code":"WTS2","Zone":"九龍區","District":"黃大仙區","Ranking":"B","address":"Wong Tai Sin 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"NC","Zone":"九龍區","District":"深水埗區","Ranking":"B","address":"Nam Cheong, Sham Shui Po","facilities":"","lat":"","lng":""},{"Branch Code":"TW2","Zone":"新界區","District":"荃灣區","Ranking":"B","address":"Tsuen Wan 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TW3","Zone":"新界區","District":"荃灣區","Ranking":"B","address":"Tsuen Wan 3rd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"ALP1","Zone":"港島區","District":"南區","Ranking":"B","address":"Shop No. 315 & 316, Level 4, Lei Tung Estate, No.5 Lei Tung Estate Road, Ap Lei Chau","facilities":"","lat":"","lng":""},{"Branch Code":"ALP1","Zone":"港島區","District":"南區","Ranking":"B","address":"Shop No. 315 & 316, Level 4, Lei Tung Estate, No.5 Lei Tung Estate Road, Ap Lei Chau","facilities":"","lat":"","lng":""},{"Branch Code":"YMT2","Zone":"九龍區","District":"油尖旺區","Ranking":"B","address":"Yau Ma Tei 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"NP1","Zone":"港島區","District":"東區","Ranking":"B","address":"North Point 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"QB","Zone":"港島區","District":"東區","Ranking":"B","address":"Quarry Bay","facilities":"","lat":"","lng":""},{"Branch Code":"SWH","Zone":"港島區","District":"東區","Ranking":"B","address":"Sai Wan Ho","facilities":"","lat":"","lng":""},{"Branch Code":"TKO1","Zone":"新界區","District":"西貢區","Ranking":"B","address":"Tseung Kwan O 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TKO2","Zone":"新界區","District":"西貢區","Ranking":"B","address":"Tseung Kwan O 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"FL1","Zone":"新界區","District":"北區","Ranking":"B","address":"Fanling 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TM2","Zone":"新界區","District":"屯門區","Ranking":"B","address":"Tuen Mun 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TSW2","Zone":"新界區","District":"元朗區","Ranking":"B","address":"Tin Shui Wai 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TSW2","Zone":"新界區","District":"元朗區","Ranking":"B","address":"Tin Shui Wai 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"KET1","Zone":"港島區","District":"中西區","Ranking":"B","address":"Shop 3B, G/F, 2 Catchick Street, Harbour View Garden Tower 3, Kennedy Town","facilities":"","lat":"","lng":""},{"Branch Code":"SaiWan","Zone":"港島區","District":"中西區","Ranking":"B","address":"Sai Wan, Kennedy Town area","facilities":"","lat":"","lng":""},{"Branch Code":"SheungWan","Zone":"港島區","District":"中西區","Ranking":"B","address":"Sheung Wan","facilities":"","lat":"","lng":""},{"Branch Code":"SYP","Zone":"港島區","District":"中西區","Ranking":"B","address":"Sai Ying Pun","facilities":"","lat":"","lng":""},{"Branch Code":"HKSTP","Zone":"新界區","District":"大埔區","Ranking":"B","address":"Hong Kong Science & Technology Park, Pak Shek Kok","facilities":"","lat":"","lng":""},{"Branch Code":"TP3","Zone":"新界區","District":"大埔區","Ranking":"B","address":"Tai Po 3rd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"HMT","Zone":"九龍區","District":"九龍城區","Ranking":"B","address":"Ho Man Tin","facilities":"","lat":"","lng":""},{"Branch Code":"TKW1","Zone":"九龍區","District":"九龍城區","Ranking":"B","address":"To Kwa Wan 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TinHau","Zone":"港島區","District":"灣仔區","Ranking":"B-","address":"Tin Hau, Eastern District","facilities":"","lat":"","lng":""},{"Branch Code":"LCK","Zone":"九龍區","District":"深水埗區","Ranking":"B-","address":"Lai Chi Kok","facilities":"","lat":"","lng":""},{"Branch Code":"ABD2","Zone":"港島區","District":"南區","Ranking":"B-","address":"Shop E, 1/F., Aberdeen Centre 5, Nam Ning Street, Aberdeen","facilities":"","lat":"","lng":""},{"Branch Code":"HM2","Zone":"九龍區","District":"九龍城區","Ranking":"B-","address":"Ho Man Tin 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TC","Zone":"新界區","District":"離島區","Ranking":"B+","address":"Tung Chung","facilities":"","lat":"","lng":""},{"Branch Code":"FestialWalk","Zone":"九龍區","District":"黃大仙區","Ranking":"B+","address":"Unit LG2-29, Festival Walk, 80 Tat Chee Avenue, Kowloon Tong","facilities":"","lat":"","lng":""},{"Branch Code":"WTS1","Zone":"九龍區","District":"黃大仙區","Ranking":"B+","address":"Wong Tai Sin 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"ShamTseng","Zone":"新界區","District":"荃灣區","Ranking":"B+","address":"Sham Tseng, Tsuen Wan","facilities":"","lat":"","lng":""},{"Branch Code":"K11","Zone":"九龍區","District":"油尖旺區","Ranking":"B+","address":"K11 MUSEA, 18 Salisbury Road, Tsim Sha Tsui","facilities":"","lat":"","lng":""},{"Branch Code":"TKT2","Zone":"九龍區","District":"油尖旺區","Ranking":"B+","address":"Tsim Sha Tsui 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"YMT","Zone":"九龍區","District":"油尖旺區","Ranking":"B+","address":"Yau Ma Tei","facilities":"","lat":"","lng":""},{"Branch Code":"MK1","Zone":"九龍區","District":"油尖旺區","Ranking":"B+","address":"Mong Kok 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TKT1","Zone":"九龍區","District":"油尖旺區","Ranking":"B+","address":"Tsim Sha Tsui 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"CW","Zone":"港島區","District":"東區","Ranking":"B+","address":"10/F, E-trade Plaza, 24 Lee Chung Street, Chai Wan","facilities":"","lat":"","lng":""},{"Branch Code":"KLC","Zone":"九龍區","District":"九龍城區","Ranking":"B+","address":"Kowloon City area","facilities":"","lat":"","lng":""},{"Branch Code":"ABD1","Zone":"港島區","District":"南區","Ranking":"C","address":"G/F & 1/F, 190 Aberdeen Main Road, Aberdeen","facilities":"","lat":"","lng":""},{"Branch Code":"LKW","Zone":"港島區","District":"東區","Ranking":"C","address":"Lei King Wan","facilities":"","lat":"","lng":""},{"Branch Code":"TaiWai1","Zone":"新界區","District":"沙田區","Ranking":"C","address":"Tai Wai 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"MOS1","Zone":"新界區","District":"沙田區","Ranking":"C","address":"Ma On Shan 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"YL1","Zone":"新界區","District":"元朗區","Ranking":"C","address":"Yuen Long 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"CTL1","Zone":"港島區","District":"中西區","Ranking":"C","address":"G/F & L/G, Cameo Court, 63-69 Caine Road, Central","facilities":"","lat":"","lng":""},{"Branch Code":"TaiWai","Zone":"新界區","District":"大埔區","Ranking":"C","address":"Tai Wai, Sha Tin","facilities":"","lat":"","lng":""},{"Branch Code":"TSW1","Zone":"新界區","District":"元朗區","Ranking":"C-","address":"Tin Shui Wai 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"SS1","Zone":"新界區","District":"北區","Ranking":"C+","address":"Sheung Shui 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TM3","Zone":"新界區","District":"屯門區","Ranking":"C+","address":"Tuen Mun 3rd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"KSR","Zone":"新界區","District":"元朗區","Ranking":"C+","address":"Kam Sheung Road, Yuen Long","facilities":"","lat":"","lng":""},{"Branch Code":"TP1","Zone":"新界區","District":"大埔區","Ranking":"C+","address":"Tai Po 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"CWB1","Zone":"港島區","District":"灣仔區","Ranking":"D","address":"G/F & B/F, Kin Tak Fung Commercial Building, 467-473 Hennessy Road, Causeway Bay","facilities":"","lat":"","lng":""},{"Branch Code":"KC1","Zone":"新界區","District":"葵青區","Ranking":"D","address":"Kwai Chung 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"CSW2","Zone":"九龍區","District":"深水埗區","Ranking":"D","address":"1/F, ONE NEW YORK, 468 Castle Peak Road, Cheung Sha Wan","facilities":"","lat":"","lng":""},{"Branch Code":"CSW1","Zone":"九龍區","District":"深水埗區","Ranking":"D","address":"11/F., PeakCastle, 476 Castle Peak Road, Cheung Sha Wan","facilities":"","lat":"","lng":""},{"Branch Code":"SKW","Zone":"港島區","District":"東區","Ranking":"D","address":"Shau Kei Wan","facilities":"","lat":"","lng":""},{"Branch Code":"SSW","Zone":"港島區","District":"東區","Ranking":"D","address":"Shau Kei Wan / So Kwun Wat area","facilities":"","lat":"","lng":""},{"Branch Code":"YL2","Zone":"新界區","District":"元朗區","Ranking":"D","address":"Yuen Long 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"HM1","Zone":"九龍區","District":"九龍城區","Ranking":"D","address":"Ho Man Tin 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TM5","Zone":"新界區","District":"屯門區","Ranking":"GOAT","address":"Tuen Mun 5th Branch, 大興花園","facilities":"","lat":"","lng":""},{"Branch Code":"WC","Zone":"港島區","District":"灣仔區","Ranking":"S","address":"Wan Chai","facilities":"","lat":"","lng":""},{"Branch Code":"SSP2","Zone":"九龍區","District":"深水埗區","Ranking":"S","address":"Sham Shui Po 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"SSP3","Zone":"九龍區","District":"深水埗區","Ranking":"S","address":"Sham Shui Po 3rd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TW6","Zone":"新界區","District":"荃灣區","Ranking":"S","address":"Tsuen Wan 6th Branch","facilities":"","lat":"","lng":""},{"Branch Code":"PE","Zone":"九龍區","District":"油尖旺區","Ranking":"S","address":"Prince Edward area","facilities":"","lat":"","lng":""},{"Branch Code":"MOS2","Zone":"新界區","District":"沙田區","Ranking":"S","address":"Ma On Shan 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"ST2","Zone":"新界區","District":"沙田區","Ranking":"S","address":"Sha Tin 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"ShekMun","Zone":"新界區","District":"沙田區","Ranking":"S","address":"Shek Mun, Sha Tin","facilities":"","lat":"","lng":""},{"Branch Code":"TKO4","Zone":"新界區","District":"西貢區","Ranking":"S","address":"Tseung Kwan O 4th Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TSW4","Zone":"新界區","District":"元朗區","Ranking":"S","address":"Tin Shui Wai 4th Branch","facilities":"","lat":"","lng":""},{"Branch Code":"CTL3","Zone":"港島區","District":"中西區","Ranking":"S","address":"27/F, New World Tower 1, 16-18 Queen's Road Central, Central","facilities":"","lat":"","lng":""},{"Branch Code":"KTM","Zone":"九龍區","District":"九龍城區","Ranking":"S","address":"Kowloon City MTR area","facilities":"","lat":"","lng":""},{"Branch Code":"KT4","Zone":"九龍區","District":"觀塘區","Ranking":"S-","address":"Kwun Tong 4th Branch","facilities":"","lat":"","lng":""},{"Branch Code":"KwaiFong1","Zone":"新界區","District":"葵青區","Ranking":"S-","address":"1/F & 2/F, Foon Tak Building, 40 Shing Fong Street, Kwai Fong","facilities":"","lat":"","lng":""},{"Branch Code":"YT","Zone":"九龍區","District":"黃大仙區","Ranking":"S-","address":"Yau Tong","facilities":"","lat":"","lng":""},{"Branch Code":"SPK1","Zone":"九龍區","District":"黃大仙區","Ranking":"S-","address":"San Po Kong 1st Branch","facilities":"","lat":"","lng":""},{"Branch Code":"TW7","Zone":"新界區","District":"荃灣區","Ranking":"S-","address":"Tsuen Wan 7th Branch","facilities":"","lat":"","lng":""},{"Branch Code":"FOT","Zone":"港島區","District":"東區","Ranking":"S-","address":"Shop 219-221, 228-230, 2/F, Arles Place, 1 Au Pui Wan Street, Fo Tan","facilities":"","lat":"","lng":""},{"Branch Code":"SK","Zone":"新界區","District":"西貢區","Ranking":"S-","address":"Sai Kung","facilities":"","lat":"","lng":""},{"Branch Code":"KET2","Zone":"港島區","District":"中西區","Ranking":"S-","address":"Shop F, G/F, Luen Hong, 116-122 Belcher's Street, Kennedy Town","facilities":"","lat":"","lng":""},{"Branch Code":"LokFu","Zone":"九龍區","District":"黃大仙區","Ranking":"S+","address":"Lok Fu","facilities":"","lat":"","lng":""},{"Branch Code":"MegaBox","Zone":"九龍區","District":"黃大仙區","Ranking":"S+","address":"MegaBox, Enterprise Square 5, Kowloon Bay","facilities":"","lat":"","lng":""},{"Branch Code":"KLB","Zone":"九龍區","District":"黃大仙區","Ranking":"S+","address":"2/F, Block S, Lee Kee Building, 55 Ngau Tau Kok Road, Kowloon Bay","facilities":"","lat":"","lng":""},{"Branch Code":"MK2","Zone":"九龍區","District":"油尖旺區","Ranking":"S+","address":"Mong Kok 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"NP2","Zone":"港島區","District":"東區","Ranking":"S+","address":"North Point 2nd Branch","facilities":"","lat":"","lng":""},{"Branch Code":"SS2","Zone":"新界區","District":"北區","Ranking":"S+","address":"Sheung Shui 2nd Branch","facilities":"","lat":"","lng":""}];
+
+// Ranking colour map
+const RANK_COLORS = {
+  'GOAT': '#ffd700', 'S+': '#c084fc', 'S': '#818cf8', 'S-': '#60a5fa',
+  'A+': '#34d399',  'A': '#4ade80',  'A-': '#86efac',
+  'B+': '#fbbf24',  'B': '#f59e0b',  'B-': '#f97316',
+  'C+': '#fb923c',  'C': '#ef4444',  'C-': '#dc2626',
+  'D':  '#f87171'
+};
+
+const RANK_ORDER = ['GOAT','S+','S','S-','A+','A','A-','B+','B','B-','C+','C','C-','D'];
+
+let activeRankFilter = null;
+let sortKey = 'Ranking';
+let sortDir = 1;
+let currentData = [...RAW_DATA];
+
+// Populate district filter
+const allDistricts = [...new Set(RAW_DATA.map(r => r.District))].sort();
+const distSel = document.getElementById('districtFilter');
+allDistricts.forEach(d => {
+  const o = document.createElement('option');
+  o.value = d; o.textContent = d;
+  distSel.appendChild(o);
+});
+
+function rankColor(r) { return RANK_COLORS[r] || '#888'; }
+
+function makeBadge(r) {
+  const c = rankColor(r);
+  return `<span class="rank-badge" style="background:${c}22;color:${c};border:1px solid ${c}44">${r}</span>`;
+}
+
+function getFilteredData() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const zone = document.getElementById('zoneFilter').value;
+  const district = document.getElementById('districtFilter').value;
+
+  return RAW_DATA.filter(r => {
+    if (zone && r.Zone !== zone) return false;
+    if (district && r.District !== district) return false;
+    if (activeRankFilter && r.Ranking !== activeRankFilter) return false;
+    if (q) {
+      const haystack = [r['Branch Code'], r.Zone, r.District, r.address, r.facilities, r.Ranking]
+        .join(' ').toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+function sortData(data) {
+  return [...data].sort((a, b) => {
+    let av, bv;
+    if (sortKey === 'Ranking') {
+      av = RANK_ORDER.indexOf(a.Ranking);
+      bv = RANK_ORDER.indexOf(b.Ranking);
+      if (av === -1) av = 99; if (bv === -1) bv = 99;
+    } else {
+      av = (a[sortKey] || '').toString().toLowerCase();
+      bv = (b[sortKey] || '').toString().toLowerCase();
+    }
+    if (av < bv) return -sortDir;
+    if (av > bv) return sortDir;
+    return 0;
+  });
+}
+
+function render() {
+  const filtered = getFilteredData();
+  const sorted = sortData(filtered);
+  currentData = sorted;
+
+  const body = document.getElementById('gymBody');
+  const empty = document.getElementById('emptyState');
+  const table = document.getElementById('gymTable');
+
+  if (sorted.length === 0) {
+    body.innerHTML = '';
+    table.style.display = 'none';
+    empty.style.display = 'block';
+  } else {
+    table.style.display = '';
+    empty.style.display = 'none';
+    body.innerHTML = sorted.map((r, i) => {
+      const hasFac = r.facilities && r.facilities.trim();
+      return `<tr onclick="openModal(${RAW_DATA.indexOf(r)})">
+        <td class="td-zone" style="color:#444;font-family:'DM Mono',monospace;font-size:11px">${i+1}</td>
+        <td class="td-code">${r['Branch Code']}</td>
+        <td>${makeBadge(r.Ranking)}</td>
+        <td><span class="zone-chip">${r.Zone}</span></td>
+        <td class="td-district">${r.District}</td>
+        <td class="td-address">${r.address || '<span style="color:#333;font-style:italic">—</span>'}</td>
+        <td class="td-facilities ${hasFac ? 'filled' : ''}">${hasFac ? r.facilities : '—'}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Update stats
+  const rankCounts = {};
+  filtered.forEach(r => { rankCounts[r.Ranking] = (rankCounts[r.Ranking]||0)+1; });
+  const zones = {};
+  filtered.forEach(r => { zones[r.Zone] = (zones[r.Zone]||0)+1; });
+
+  document.getElementById('headerCount').textContent = `${filtered.length} / ${RAW_DATA.length} branches`;
+
+  const statsItems = [
+    `<span class="stat-item">Showing <b>${filtered.length}</b></span>`,
+    ...Object.entries(zones).map(([z,n]) => `<span class="stat-item">${z} <b>${n}</b></span>`),
+  ];
+  document.getElementById('statsBar').innerHTML = statsItems.join('');
+
+  // Update sort indicators
+  document.querySelectorAll('thead th').forEach(th => th.classList.remove('sorted'));
+  const keyMap = {'Branch Code':'th-branchcode','Ranking':'th-ranking','Zone':'th-zone','District':'th-district'};
+  if (keyMap[sortKey]) {
+    const el = document.getElementById(keyMap[sortKey]);
+    if (el) {
+      el.classList.add('sorted');
+      el.querySelector('.sort-arrow').textContent = sortDir === 1 ? ' ↑' : ' ↓';
+    }
+  }
+}
+
+function sortBy(key) {
+  if (sortKey === key) { sortDir *= -1; }
+  else { sortKey = key; sortDir = 1; }
+  render();
+}
+
+function filterByRank(r) {
+  if (activeRankFilter === r) {
+    activeRankFilter = null;
+    document.querySelectorAll('.rank-pill').forEach(p => p.classList.remove('active'));
+  } else {
+    activeRankFilter = r;
+    document.querySelectorAll('.rank-pill').forEach(p => {
+      p.classList.toggle('active', p.dataset.rank === r);
+    });
+  }
+  render();
+}
+
+function clearFilters() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('zoneFilter').value = '';
+  document.getElementById('districtFilter').value = '';
+  activeRankFilter = null;
+  document.querySelectorAll('.rank-pill').forEach(p => p.classList.remove('active'));
+  render();
+}
+
+// Zone changes → update district options
+document.getElementById('zoneFilter').addEventListener('change', function() {
+  const zone = this.value;
+  const distSel = document.getElementById('districtFilter');
+  distSel.innerHTML = '<option value="">All Districts</option>';
+  const districts = [...new Set(RAW_DATA.filter(r => !zone || r.Zone === zone).map(r => r.District))].sort();
+  districts.forEach(d => {
+    const o = document.createElement('option');
+    o.value = d; o.textContent = d;
+    distSel.appendChild(o);
+  });
+  render();
+});
+
+document.getElementById('districtFilter').addEventListener('change', render);
+document.getElementById('searchInput').addEventListener('input', render);
+
+// Modal
+function openModal(idx) {
+  const r = RAW_DATA[idx];
+  document.getElementById('mCode').textContent = r['Branch Code'];
+  document.getElementById('mMeta').textContent = `${r.Zone}  ·  ${r.District}`;
+  document.getElementById('mRankRow').innerHTML = makeBadge(r.Ranking);
+  const addrEl = document.getElementById('mAddress');
+  if (r.address) {
+    addrEl.textContent = r.address;
+    addrEl.classList.remove('empty-val');
+  } else {
+    addrEl.textContent = 'Address not yet added';
+    addrEl.classList.add('empty-val');
+  }
+  const facEl = document.getElementById('mFacilities');
+  if (r.facilities) {
+    facEl.textContent = r.facilities;
+    facEl.classList.remove('empty-val');
+  } else {
+    facEl.textContent = 'Facilities not yet recorded';
+    facEl.classList.add('empty-val');
+  }
+  const mapBtn = document.getElementById('mMapBtn');
+  if (r.lat && r.lng) {
+    mapBtn.href = `https://maps.google.com/?q=${r.lat},${r.lng}`;
+    mapBtn.classList.remove('disabled');
+    mapBtn.textContent = 'Open in Google Maps ↗';
+  } else if (r.address) {
+    mapBtn.href = `https://maps.google.com/?q=${encodeURIComponent(r.address + ', Hong Kong')}`;
+    mapBtn.classList.remove('disabled');
+    mapBtn.textContent = 'Search in Google Maps ↗';
+  } else {
+    mapBtn.href = '#';
+    mapBtn.classList.add('disabled');
+    mapBtn.textContent = 'No location data';
+  }
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('modalOverlay').classList.remove('open');
+});
+
+// Init
+render();
+</script>
+</body>
+</html>
