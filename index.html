@@ -412,6 +412,67 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+  .td-location {
+    white-space: nowrap;
+    min-width: 120px;
+  }
+  .loc-area {
+    display: block;
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .loc-district {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .loc-region {
+    display: block;
+    font-size: 10px;
+    color: #444;
+    font-family: 'DM Mono', monospace;
+    margin-top: 1px;
+  }
+
+  /* Tighter table layout to reduce horizontal scroll */
+  table {
+    table-layout: auto;
+  }
+  .td-code {
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  .td-address {
+    max-width: 260px;
+    min-width: 160px;
+    font-size: 11px;
+    color: #aaa;
+    line-height: 1.4;
+    word-break: break-word;
+    white-space: normal;
+  }
+  .td-facilities {
+    max-width: 160px;
+    min-width: 80px;
+  }
+
+  .rank-group-btn {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    border: 1px solid transparent;
+    opacity: 0.8;
+    letter-spacing: 0.03em;
+  }
+  .rank-group-btn:hover { opacity: 1; transform: scale(1.05); }
+  .rank-group-btn.active { opacity: 1; border-color: rgba(255,255,255,0.4); transform: scale(1.05); }
 </style>
 </head>
 <body>
@@ -440,7 +501,16 @@
 </div>
 
 <div class="legend">
-  <span class="legend-label">Rank:</span>
+  <span class="legend-label">Tier:</span>
+  <span class="rank-group-btn" onclick="selectGroup('GOAT')" data-group="GOAT" style="background:#ffd70022;color:#ffd700">GOAT</span>
+  <span class="rank-group-btn" onclick="selectGroup('S')" data-group="S" style="background:#818cf822;color:#818cf8">S</span>
+  <span class="rank-group-btn" onclick="selectGroup('A')" data-group="A" style="background:#4ade8022;color:#4ade80">A</span>
+  <span class="rank-group-btn" onclick="selectGroup('B')" data-group="B" style="background:#f59e0b22;color:#f59e0b">B</span>
+  <span class="rank-group-btn" onclick="selectGroup('C')" data-group="C" style="background:#ef444422;color:#ef4444">C</span>
+  <span class="rank-group-btn" onclick="selectGroup('D')" data-group="D" style="background:#9f123922;color:#f87171">D</span>
+</div>
+<div class="legend" style="padding-top:6px;border-top:none;">
+  <span class="legend-label" style="color:#333">▸</span>
   <span class="rank-pill" data-rank="GOAT" style="background:#ffd70022;color:#ffd700" onclick="filterByRank('GOAT')">GOAT</span>
   <span class="rank-pill" data-rank="S+" style="background:#c084fc22;color:#c084fc" onclick="filterByRank('S+')">S+</span>
   <span class="rank-pill" data-rank="S" style="background:#818cf822;color:#818cf8" onclick="filterByRank('S')">S</span>
@@ -466,9 +536,7 @@
         <th onclick="sortBy('Branch Code')" id="th-code">#<span class="sort-arrow">↕</span></th>
         <th onclick="sortBy('Branch Code')" id="th-branchcode">Branch Code<span class="sort-arrow">↕</span></th>
         <th onclick="sortBy('Ranking')" id="th-ranking">Ranking<span class="sort-arrow">↕</span></th>
-        <th onclick="sortBy('zone_area')" id="th-zone_area">Zone<span class="sort-arrow">↕</span></th>
-        <th onclick="sortBy('Zone')" id="th-zone">Region<span class="sort-arrow">↕</span></th>
-        <th onclick="sortBy('District')" id="th-district">District<span class="sort-arrow">↕</span></th>
+        <th onclick="sortBy('zone_area')" id="th-location">Location<span class="sort-arrow">↕</span></th>
         <th>Address</th>
         <th>Facilities</th>
       </tr>
@@ -589,9 +657,11 @@ function render() {
         <td class="td-zone" style="color:#444;font-family:'DM Mono',monospace;font-size:11px">${i+1}</td>
         <td class="td-code">${r['Branch Code']}</td>
         <td>${makeBadge(r.Ranking)}</td>
-        <td class="td-district">${r.zone_area || '—'}</td>
-        <td><span class="zone-chip">${r.Zone}</span></td>
-        <td class="td-district">${r.District}</td>
+        <td class="td-location">
+          <span class="loc-area">${r.zone_area || '—'}</span>
+          <span class="loc-district">${r.District}</span>
+          <span class="loc-region">${r.Zone}</span>
+        </td>
         <td class="td-address">${r.address || '<span style="color:#333;font-style:italic">—</span>'}</td>
         <td class="td-facilities ${hasFac ? 'filled' : ''}">${hasFac ? r.facilities : '—'}</td>
       </tr>`;
@@ -614,7 +684,7 @@ function render() {
 
   // Update sort indicators
   document.querySelectorAll('thead th').forEach(th => th.classList.remove('sorted'));
-  const keyMap = {'Branch Code':'th-branchcode','Ranking':'th-ranking','zone_area':'th-zone_area','Zone':'th-zone','District':'th-district'};
+  const keyMap = {'Branch Code':'th-branchcode','Ranking':'th-ranking','zone_area':'th-location','Zone':'th-location','District':'th-location'};
   if (keyMap[sortKey]) {
     const el = document.getElementById(keyMap[sortKey]);
     if (el) {
@@ -633,6 +703,52 @@ function sortBy(key) {
 // Multi-select rank filter
 let activeRankFilters = new Set();
 
+const RANK_GROUPS = {
+  'GOAT': ['GOAT'],
+  'S':    ['S+', 'S', 'S-'],
+  'A':    ['A+', 'A', 'A-'],
+  'B':    ['B+', 'B', 'B-'],
+  'C':    ['C+', 'C', 'C-'],
+  'D':    ['D'],
+};
+
+function selectGroup(group) {
+  const btn = document.querySelector(`.rank-group-btn[data-group="${group}"]`);
+  const ranks = RANK_GROUPS[group];
+  const allSelected = ranks.every(r => activeRankFilters.has(r));
+
+  if (allSelected) {
+    // Deselect all in group
+    ranks.forEach(r => activeRankFilters.delete(r));
+    btn.classList.remove('active');
+  } else {
+    // Select all in group
+    ranks.forEach(r => activeRankFilters.add(r));
+    btn.classList.add('active');
+  }
+
+  // Update individual pills
+  document.querySelectorAll('.rank-pill').forEach(p => {
+    p.classList.toggle('active', activeRankFilters.has(p.dataset.rank));
+  });
+
+  // Update group button states
+  updateGroupButtons();
+  render();
+}
+
+function updateGroupButtons() {
+  document.querySelectorAll('.rank-group-btn').forEach(btn => {
+    const group = btn.dataset.group;
+    const ranks = RANK_GROUPS[group];
+    const allSelected = ranks.every(r => activeRankFilters.has(r));
+    const someSelected = ranks.some(r => activeRankFilters.has(r));
+    btn.classList.toggle('active', allSelected);
+    btn.style.opacity = someSelected ? '1' : '0.8';
+  });
+}
+
+
 function filterByRank(r) {
   if (activeRankFilters.has(r)) {
     activeRankFilters.delete(r);
@@ -642,6 +758,7 @@ function filterByRank(r) {
   document.querySelectorAll('.rank-pill').forEach(p => {
     p.classList.toggle('active', activeRankFilters.has(p.dataset.rank));
   });
+  updateGroupButtons();
   render();
 }
 
@@ -651,6 +768,7 @@ function clearFilters() {
   document.getElementById('districtFilter').value = '';
   activeRankFilters.clear();
   document.querySelectorAll('.rank-pill').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.rank-group-btn').forEach(p => { p.classList.remove('active'); p.style.opacity='0.8'; });
   render();
 }
 
